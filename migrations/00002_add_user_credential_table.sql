@@ -1,6 +1,7 @@
 -- +goose Up
 -- +goose StatementBegin
-CREATE TABLE user_credentials (
+-- Create user_credentials Table
+CREATE TABLE IF NOT EXISTS base.user_credentials (
 	"id"             UUID PRIMARY KEY NOT NULL DEFAULT GEN_RANDOM_UUID(),
 	"created_utc"    TIMESTAMP        NOT NULL DEFAULT NOW(),
 	"deleted_utc"    TIMESTAMP        NULL,
@@ -15,5 +16,6 @@ CREATE TABLE user_credentials (
 
 -- +goose Down
 -- +goose StatementBegin
-DROP TABLE user_credentials;
+-- Drop user_credentials Table
+DROP TABLE IF EXISTS base.user_credentials;
 -- +goose StatementEnd
