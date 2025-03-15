@@ -1,7 +1,7 @@
 -- +goose Up
 -- +goose StatementBegin
--- Create user_settings Table
-CREATE TABLE IF NOT EXISTS base.user_settings (
+-- Create settings Table
+CREATE TABLE IF NOT EXISTS base.settings (
     "id"             UUID PRIMARY KEY NOT NULL DEFAULT GEN_RANDOM_UUID(),
     "created_utc"    TIMESTAMP NOT NULL DEFAULT NOW(),
     "deleted_utc"    TIMESTAMP NULL,
@@ -15,6 +15,6 @@ CREATE TABLE IF NOT EXISTS base.user_settings (
 
 -- +goose Down
 -- +goose StatementBegin
--- Drop user_settings Table
-DROP TABLE IF EXISTS base.user_settings;
+-- Drop settings Table
+DROP TABLE IF EXISTS base.settings;
 -- +goose StatementEnd

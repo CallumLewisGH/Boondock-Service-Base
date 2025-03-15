@@ -12,8 +12,9 @@ CREATE TABLE IF NOT EXISTS base.user_campsites (
 	"description"    VARCHAR(512) NULL,
 	"photo" 	     TEXT NULL,
 
-	FOREIGN KEY (user_id) REFERENCES base.user_credentials(id)
+	FOREIGN KEY (user_id) REFERENCES base.users(id)
 );
+CREATE UNIQUE INDEX idx_name ON base.user_campsites(name);
 -- +goose StatementEnd
 
 -- +goose Down

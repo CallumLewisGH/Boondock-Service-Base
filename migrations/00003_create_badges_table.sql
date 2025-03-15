@@ -1,7 +1,7 @@
 -- +goose Up
 -- +goose StatementBegin
--- Create user_badges Table
-CREATE TABLE IF NOT EXISTS base.user_badges (
+-- Create badges Table
+CREATE TABLE IF NOT EXISTS base.badges (
     "id"             UUID PRIMARY KEY NOT NULL DEFAULT GEN_RANDOM_UUID(),
     "created_utc"    TIMESTAMP        NOT NULL DEFAULT NOW(),
     "deleted_utc"    TIMESTAMP        NULL,
@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS base.user_badges (
 
 -- +goose Down
 -- +goose StatementBegin
--- Drop user_badges Table
-DROP TABLE IF EXISTS base.user_badges;
+-- Drop badges Table
+DROP TABLE IF EXISTS base.badges;
 
 -- +goose StatementEnd
