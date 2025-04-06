@@ -1,17 +1,23 @@
 FROM golang:latest
 
+# Set the working directory
 WORKDIR /usr/src/app
 
-# pre-copy/cache go.mod for pre-downloading dependencies and only redownloading them in subsequent builds if they change
+# Pre-copy/cache go.mod for pre-downloading dependencies
 COPY go.mod go.sum ./
 RUN go mod download
 
+# Copy the rest of the application code
 COPY . .
-RUN go build -v -o /usr/local/bin/app ./...
 
-#Port Environment variable to determine port for listening
+# Build the application
+RUN go build -v -o /usr/local/bin/app ./cmd/app
+
+# Set the port environment variable
 ENV PORT=8080
 
+# Expose the port
 EXPOSE 8080
 
-CMD ["go", "run", "cmd/app/main.go"]
+# Run the application
+CMD ["/usr/local/bin/app"]
