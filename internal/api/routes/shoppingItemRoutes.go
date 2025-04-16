@@ -3,9 +3,10 @@ package routes
 import (
 	"encoding/json"
 	"net/http"
+	"reflect"
 
 	"github.com/CallumLewisGH/Boondock-Service-Base/internal/api"
-	shopping "github.com/CallumLewisGH/Boondock-Service-Base/internal/domain/models/shopping"
+	models "github.com/CallumLewisGH/Boondock-Service-Base/internal/domain/models"
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 )
@@ -55,23 +56,22 @@ func getShoppingItemById(s *api.Server) http.HandlerFunc {
 		}
 
 		//Logic
-		var item shopping.Item
+		var item models.Item
 		for i := range s.ShoppingItems {
 			if s.ShoppingItems[i].Id == id {
 				item = s.ShoppingItems[i]
+				break
 			}
 		}
-		var emptyItem shopping.Item
-		if item == emptyItem {
-			http.Error(w, err.Error(), http.StatusNotFound)
-			return
-		}
+		if models.IsEmpty[models.Item](item) {
+			json.NewEncoder(w)
+			http.Error(w, reflect.TypeOf(item).Name()+" with id "+idStr+" cannot be found", http.StatusNotFound)
 
-		//Encode
-		w.Header().Set("Content-Type", "application/json")
-		if err := json.NewEncoder(w).Encode(item); err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
+		} else {
+			if err := json.NewEncoder(w).Encode(item); err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
 		}
 	}
 }
@@ -87,13 +87,12 @@ func getShoppingItemById(s *api.Server) http.HandlerFunc {
 func createShoppingItem(s *api.Server) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		//Decode
-		var i shopping.Item
+		var i models.Item
 		if err := json.NewDecoder(r.Body).Decode(&i); err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 		//Logic
-		i.Id = uuid.New()
 		s.ShoppingItems = append(s.ShoppingItems, i)
 
 		//Encode
