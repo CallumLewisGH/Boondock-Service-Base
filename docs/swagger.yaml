@@ -1,6 +1,6 @@
 basePath: /
 definitions:
-  api.Item:
+  models.Item:
     description: Shopping item information
     properties:
       id:
@@ -27,7 +27,7 @@ paths:
           description: Returns the shopping list, empty array if no items
           schema:
             items:
-              $ref: '#/definitions/api.Item'
+              $ref: '#/definitions/models.Item'
             type: array
       summary: List all shopping items
       tags:
@@ -37,12 +37,12 @@ paths:
       description: Creates a new shopping item from provided json data
       parameters:
       - description: Item
-        format: api.Item
+        format: models.Item
         in: body
         name: name
         required: true
         schema:
-          $ref: '#/definitions/api.Item'
+          $ref: '#/definitions/models.Item'
       produces:
       - application/json
       responses:
@@ -54,6 +54,34 @@ paths:
       tags:
       - items
   /items/{id}:
+    delete:
+      description: Removes a shopping item from storage by UUID
+      parameters:
+      - description: Item ID
+        example: 550e8400-e29b-41d4-a716-446655440000
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Item found
+          schema:
+            $ref: '#/definitions/models.Item'
+        "400":
+          description: Invalid UUID format
+          schema:
+            type: string
+        "404":
+          description: Item not found
+          schema:
+            type: string
+      summary: Deltete a shopping item by id
+      tags:
+      - items
     get:
       description: Gets a shopping item by UUID
       parameters:
@@ -70,7 +98,7 @@ paths:
         "200":
           description: Item found
           schema:
-            $ref: '#/definitions/api.Item'
+            $ref: '#/definitions/models.Item'
         "400":
           description: Invalid UUID format
           schema:

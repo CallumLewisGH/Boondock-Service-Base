@@ -31,7 +31,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/api.Item"
+                                "$ref": "#/definitions/models.Item"
                             }
                         }
                     }
@@ -50,13 +50,13 @@ const docTemplate = `{
                 "summary": "Create a new shopping item",
                 "parameters": [
                     {
-                        "format": "api.Item",
+                        "format": "models.Item",
                         "description": "Item",
                         "name": "name",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/api.Item"
+                            "$ref": "#/definitions/models.Item"
                         }
                     }
                 ],
@@ -95,7 +95,48 @@ const docTemplate = `{
                     "200": {
                         "description": "Item found",
                         "schema": {
-                            "$ref": "#/definitions/api.Item"
+                            "$ref": "#/definitions/models.Item"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid UUID format",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Item not found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Removes a shopping item from storage by UUID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "items"
+                ],
+                "summary": "Deltete a shopping item by id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "format": "uuid",
+                        "example": "550e8400-e29b-41d4-a716-446655440000",
+                        "description": "Item ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Item found",
+                        "schema": {
+                            "$ref": "#/definitions/models.Item"
                         }
                     },
                     "400": {
@@ -115,7 +156,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "api.Item": {
+        "models.Item": {
             "description": "Shopping item information",
             "type": "object",
             "properties": {
