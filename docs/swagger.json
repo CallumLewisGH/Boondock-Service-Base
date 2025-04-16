@@ -21,12 +21,85 @@
                 "summary": "List all shopping items",
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Returns the shopping list, empty array if no items",
                         "schema": {
                             "type": "array",
                             "items": {
                                 "$ref": "#/definitions/api.Item"
                             }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Creates a new shopping item from provided json data",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "items"
+                ],
+                "summary": "Create a new shopping item",
+                "parameters": [
+                    {
+                        "format": "api.Item",
+                        "description": "Item",
+                        "name": "name",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/api.Item"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": ""
+                        }
+                    }
+                }
+            }
+        },
+        "/items/{id}": {
+            "get": {
+                "description": "Gets a shopping item by UUID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "items"
+                ],
+                "summary": "Get a shopping item by id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "format": "uuid",
+                        "example": "550e8400-e29b-41d4-a716-446655440000",
+                        "description": "Item ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Item found",
+                        "schema": {
+                            "$ref": "#/definitions/api.Item"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid UUID format",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Item not found",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }

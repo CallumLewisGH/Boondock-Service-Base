@@ -24,12 +24,61 @@ paths:
       - application/json
       responses:
         "200":
-          description: OK
+          description: Returns the shopping list, empty array if no items
           schema:
             items:
               $ref: '#/definitions/api.Item'
             type: array
       summary: List all shopping items
+      tags:
+      - items
+    post:
+      description: Creates a new shopping item from provided json data
+      parameters:
+      - description: Item
+        format: api.Item
+        in: body
+        name: name
+        required: true
+        schema:
+          $ref: '#/definitions/api.Item'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: ""
+      summary: Create a new shopping item
+      tags:
+      - items
+  /items/{id}:
+    get:
+      description: Gets a shopping item by UUID
+      parameters:
+      - description: Item ID
+        example: 550e8400-e29b-41d4-a716-446655440000
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Item found
+          schema:
+            $ref: '#/definitions/api.Item'
+        "400":
+          description: Invalid UUID format
+          schema:
+            type: string
+        "404":
+          description: Item not found
+          schema:
+            type: string
+      summary: Get a shopping item by id
       tags:
       - items
 swagger: "2.0"

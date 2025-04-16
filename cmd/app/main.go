@@ -19,10 +19,14 @@ import (
 func main() {
 	//Entry Point
 	fmt.Println("Server Starting!")
+
+	//Creates new server instance
 	srv := api.NewServer()
 
+	//Route Registry
 	routes.RegisterShoppingItemRoutes(srv)
 
+	//Starts the server on port 8080
 	http.ListenAndServe(":8080", srv)
 
 }
