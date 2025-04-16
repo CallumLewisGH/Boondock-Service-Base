@@ -32,6 +32,7 @@ paths:
       summary: List all shopping items
       tags:
       - items
+  /items/:
     post:
       description: Creates a new shopping item from provided json data
       parameters:

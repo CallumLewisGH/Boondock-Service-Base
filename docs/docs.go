@@ -36,7 +36,9 @@ const docTemplate = `{
                         }
                     }
                 }
-            },
+            }
+        },
+        "/items/": {
             "post": {
                 "description": "Creates a new shopping item from provided json data",
                 "produces": [
