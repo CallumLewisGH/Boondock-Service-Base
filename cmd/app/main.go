@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"net/http"
 
-	database "github.com/CallumLewisGH/Boondock-Service-Base/db"
 	"github.com/CallumLewisGH/Boondock-Service-Base/internal/api"
 	"github.com/CallumLewisGH/Boondock-Service-Base/internal/api/routes"
 	_ "github.com/Masterminds/squirrel"
@@ -28,9 +27,6 @@ func main() {
 
 	//Route Registry
 	routes.RegisterShoppingItemRoutes(srv)
-
-	//Database Connection
-	database.ConnectDatabase()
 
 	fmt.Println("Server Listening for Requests...")
 	fmt.Println("--------------------------------")
