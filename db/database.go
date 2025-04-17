@@ -10,6 +10,7 @@ import (
 )
 
 func ConnectDatabase() {
+	fmt.Println("Connecting to Database...")
 	err := godotenv.Load()
 
 	if err != nil {
@@ -31,5 +32,5 @@ func ConnectDatabase() {
 		panic(err)
 	}
 
-	fmt.Println("Databae Successfully connected!")
+	fmt.Println("Database Connection Succeeded")
 }

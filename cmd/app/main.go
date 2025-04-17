@@ -19,22 +19,23 @@ import (
 // @BasePath /
 func main() {
 	//Entry Point
-	fmt.Println("Startup Activated")
+	fmt.Println("")
+	fmt.Println("Startup Activated:")
+	fmt.Println("--------------------------------")
 
 	//Creates new server instance
 	srv := api.NewServer()
-	fmt.Println("Server Created")
 
 	//Route Registry
 	routes.RegisterShoppingItemRoutes(srv)
-	fmt.Println("Routes Binded to Server")
 
 	//Database Connection
 	database.ConnectDatabase()
-	fmt.Println("Database Connected")
+
+	fmt.Println("Server Listening for Requests...")
+	fmt.Println("--------------------------------")
 
 	//Starts the server on port 8080
 	http.ListenAndServe(":8080", srv)
-	fmt.Println("Server Serving")
 
 }
