@@ -6,6 +6,7 @@ import (
 
 	"github.com/CallumLewisGH/Boondock-Service-Base/internal/api"
 	query "github.com/CallumLewisGH/Boondock-Service-Base/internal/api/handlers/queries"
+	"github.com/CallumLewisGH/Boondock-Service-Base/internal/api/middleware"
 	repository "github.com/CallumLewisGH/Boondock-Service-Base/internal/domain/repositories"
 )
 
@@ -29,7 +30,7 @@ func getUsers() http.HandlerFunc {
 
 		if err != nil {
 			json.NewEncoder(w)
-			http.Error(w, "internal server error", http.StatusInternalServerError)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
@@ -38,5 +39,5 @@ func getUsers() http.HandlerFunc {
 			return
 		}
 	}
-	return handler
+	return middleware.HTTPLogger(handler)
 }

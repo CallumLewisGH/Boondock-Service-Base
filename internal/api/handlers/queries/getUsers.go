@@ -7,21 +7,15 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/CallumLewisGH/Boondock-Service-Base/database"
 	"github.com/CallumLewisGH/Boondock-Service-Base/internal/domain/models"
-	repository "github.com/CallumLewisGH/Boondock-Service-Base/internal/domain/repositories"
-)
-
-var (
-	statementBuilder = repository.StatementBuilder
-	dbPool           = database.DBPool
+	"github.com/Masterminds/squirrel"
 )
 
 // GetUsers retrieves all users from the database
-func GetUsers(conn *sql.Conn, ctx context.Context) ([]models.User, error) {
+func GetUsers(conn *sql.Conn, ctx context.Context, sb squirrel.StatementBuilderType) ([]models.User, error) {
 	// Build and execute query
-	query, args, err := statementBuilder.
-		Select("id", "name", "email").
+	query, args, err := sb.
+		Select("id", "user_name", "email").
 		From("base.users").
 		ToSql()
 	if err != nil {

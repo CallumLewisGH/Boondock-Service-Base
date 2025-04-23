@@ -4,43 +4,60 @@ import (
 	"database/sql"
 	"log"
 	"os"
+	"sync"
 	"time"
 
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 )
 
-var (
+// Database wraps the SQL connection pool
+type Database struct {
 	DBPool *sql.DB
+}
+
+var (
+	dbInstance *Database
+	once       sync.Once // Ensures initialization happens only once
 )
 
-func InitialiseDatabase() {
+// GetDB returns the singleton Database instance
+func GetDB() *Database {
+	once.Do(func() {
+		dbInstance = &Database{}
+		dbInstance.InitialiseDatabase()
+	})
+	return dbInstance
+}
+
+func (db *Database) InitialiseDatabase() {
 	log.Printf("Connecting to Database...")
 	err := godotenv.Load()
-
 	if err != nil {
 		log.Printf("Error loading .env file")
 	}
 
-	var sqlInfo string = os.Getenv("DATABASE_CONNECTION_STRING")
-	var databaseDriver string = os.Getenv("DATABASE_DRIVER")
+	sqlInfo := os.Getenv("DATABASE_CONNECTION_STRING")
+	databaseDriver := os.Getenv("DATABASE_DRIVER")
 
-	db, err := sql.Open(databaseDriver, sqlInfo)
+	pool, err := sql.Open(databaseDriver, sqlInfo)
 	if err != nil {
-		panic(err)
+		log.Fatalf("Failed to open database: %v", err)
 	}
 
 	// Configure connection pool
-	db.SetMaxOpenConns(25)
-	db.SetMaxIdleConns(25)
-	db.SetConnMaxLifetime(5 * time.Minute)
+	pool.SetMaxOpenConns(25)
+	pool.SetMaxIdleConns(25)
+	pool.SetConnMaxLifetime(5 * time.Minute)
 
-	err = db.Ping()
-	if err != nil {
-		panic(err)
+	if err = pool.Ping(); err != nil {
+		log.Fatalf("Failed to ping database: %v", err)
 	}
 
-	DBPool = db
-
+	db.DBPool = pool
 	log.Printf("Database Connection Succeeded")
+}
+
+func (db *Database) GetDBPool() *sql.DB {
+	return db.DBPool
 }

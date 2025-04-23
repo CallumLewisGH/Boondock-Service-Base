@@ -6,7 +6,6 @@ import (
 	"github.com/CallumLewisGH/Boondock-Service-Base/database"
 	"github.com/CallumLewisGH/Boondock-Service-Base/internal/api"
 	"github.com/CallumLewisGH/Boondock-Service-Base/internal/api/routes"
-	repository "github.com/CallumLewisGH/Boondock-Service-Base/internal/domain/repositories"
 	_ "github.com/Masterminds/squirrel"
 	_ "github.com/joho/godotenv"
 	_ "github.com/lann/builder"
@@ -19,10 +18,7 @@ import (
 // @BasePath /
 func main() {
 	//Database Initialisation
-	database.InitialiseDatabase()
-
-	//StatmentBuilder Initialisation
-	repository.InitialiseStatementBuilder()
+	database.GetDB()
 
 	//Creates new server instance
 	srv := api.NewServer()
