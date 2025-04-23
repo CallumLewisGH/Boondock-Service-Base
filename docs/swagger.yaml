@@ -10,6 +10,21 @@ definitions:
         example: Milk
         type: string
     type: object
+  models.User:
+    properties:
+      created_utc:
+        type: string
+      deleted_utc:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      profile_picture:
+        type: string
+      user_name:
+        type: string
+    type: object
 host: localhost:8080
 info:
   contact: {}
@@ -110,4 +125,19 @@ paths:
       summary: Get a shopping item by id
       tags:
       - items
+  /users:
+    get:
+      description: Get all users in the database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Returns empty array if no users found
+          schema:
+            items:
+              $ref: '#/definitions/models.User'
+            type: array
+      summary: List all users
+      tags:
+      - users
 swagger: "2.0"

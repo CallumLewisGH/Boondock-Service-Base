@@ -1,11 +1,12 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 
+	"github.com/CallumLewisGH/Boondock-Service-Base/database"
 	"github.com/CallumLewisGH/Boondock-Service-Base/internal/api"
 	"github.com/CallumLewisGH/Boondock-Service-Base/internal/api/routes"
+	repository "github.com/CallumLewisGH/Boondock-Service-Base/internal/domain/repositories"
 	_ "github.com/Masterminds/squirrel"
 	_ "github.com/joho/godotenv"
 	_ "github.com/lann/builder"
@@ -17,19 +18,18 @@ import (
 // @host localhost:8080
 // @BasePath /
 func main() {
-	//Entry Point
-	fmt.Println("")
-	fmt.Println("Startup Activated:")
-	fmt.Println("--------------------------------")
+	//Database Initialisation
+	database.InitialiseDatabase()
+
+	//StatmentBuilder Initialisation
+	repository.InitialiseStatementBuilder()
 
 	//Creates new server instance
 	srv := api.NewServer()
 
 	//Route Registry
+	routes.RegisterUserRoutes(srv)
 	routes.RegisterShoppingItemRoutes(srv)
-
-	fmt.Println("Server Listening for Requests...")
-	fmt.Println("--------------------------------")
 
 	//Starts the server on port 8080
 	http.ListenAndServe(":8080", srv)

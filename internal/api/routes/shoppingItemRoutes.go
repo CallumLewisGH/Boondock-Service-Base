@@ -26,7 +26,7 @@ func RegisterShoppingItemRoutes(s *api.Server) {
 // @Success 200 {array} models.Item "Returns the shopping list, empty array if no items"
 // @Router /items [get]
 func getShoppingItems(s *api.Server) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
+	handler := func(w http.ResponseWriter, r *http.Request) {
 
 		w.Header().Set("Content-Type", "application/json")
 		if err := json.NewEncoder(w).Encode(s.ShoppingItems); err != nil {
@@ -34,6 +34,7 @@ func getShoppingItems(s *api.Server) http.HandlerFunc {
 			return
 		}
 	}
+	return handler
 }
 
 // GetItemById godoc
@@ -47,7 +48,7 @@ func getShoppingItems(s *api.Server) http.HandlerFunc {
 // @Failure 404 {string} string "Item not found"
 // @Router /items/{id} [get]
 func getShoppingItemById(s *api.Server) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
+	handler := func(w http.ResponseWriter, r *http.Request) {
 		//Decode
 		idStr := mux.Vars(r)["id"]
 		id, err := uuid.Parse(idStr)
@@ -75,6 +76,7 @@ func getShoppingItemById(s *api.Server) http.HandlerFunc {
 			}
 		}
 	}
+	return handler
 }
 
 // DeleteItemById godoc
@@ -88,7 +90,7 @@ func getShoppingItemById(s *api.Server) http.HandlerFunc {
 // @Failure 404 {string} string "Item not found"
 // @Router /items/{id} [delete]
 func deleteShoppingItemById(s *api.Server) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
+	handler := func(w http.ResponseWriter, r *http.Request) {
 		//Decode
 		idStr := mux.Vars(r)["id"]
 		id, err := uuid.Parse(idStr)
@@ -118,6 +120,7 @@ func deleteShoppingItemById(s *api.Server) http.HandlerFunc {
 			}
 		}
 	}
+	return handler
 }
 
 // CreateItem godoc
@@ -129,7 +132,7 @@ func deleteShoppingItemById(s *api.Server) http.HandlerFunc {
 // @Success 200 {} models.Item
 // @Router /items/ [post]
 func createShoppingItem(s *api.Server) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
+	handler := func(w http.ResponseWriter, r *http.Request) {
 		//Decode
 		var i models.Item
 		if err := json.NewDecoder(r.Body).Decode(&i); err != nil {
@@ -146,4 +149,5 @@ func createShoppingItem(s *api.Server) http.HandlerFunc {
 			return
 		}
 	}
+	return handler
 }

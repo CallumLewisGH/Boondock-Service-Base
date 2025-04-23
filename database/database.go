@@ -2,19 +2,24 @@ package database
 
 import (
 	"database/sql"
-	"fmt"
+	"log"
 	"os"
+	"time"
 
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 )
 
-func ConnectDatabase() {
-	fmt.Println("Connecting to Database...")
+var (
+	DBPool *sql.DB
+)
+
+func InitialiseDatabase() {
+	log.Printf("Connecting to Database...")
 	err := godotenv.Load()
 
 	if err != nil {
-		fmt.Println("Error loading .env file")
+		log.Printf("Error loading .env file")
 	}
 
 	var sqlInfo string = os.Getenv("DATABASE_CONNECTION_STRING")
@@ -25,12 +30,17 @@ func ConnectDatabase() {
 		panic(err)
 	}
 
-	defer db.Close()
+	// Configure connection pool
+	db.SetMaxOpenConns(25)
+	db.SetMaxIdleConns(25)
+	db.SetConnMaxLifetime(5 * time.Minute)
 
 	err = db.Ping()
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Println("Database Connection Succeeded")
+	DBPool = db
+
+	log.Printf("Database Connection Succeeded")
 }
