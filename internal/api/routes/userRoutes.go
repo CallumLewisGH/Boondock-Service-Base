@@ -47,7 +47,7 @@ func getUserById() http.HandlerFunc {
 		id, err := uuid.Parse(idStr)
 
 		if err != nil {
-			api.JsonResponse(w, nil, err, http.StatusBadRequest)
+			api.JsonResponseBadRequest(w, err)
 			return
 		}
 

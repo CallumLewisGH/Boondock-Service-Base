@@ -44,3 +44,20 @@ func JsonResponse(w http.ResponseWriter, data any, err error, successCode int) {
 	w.WriteHeader(response.Code)
 	json.NewEncoder(w).Encode(response)
 }
+
+func JsonResponseBadRequest(w http.ResponseWriter, err error) {
+	w.Header().Set("Content-Type", "application/json")
+
+	response := APIResponse{
+		Data:    nil,
+		Code:    http.StatusBadRequest,
+		Message: "request does not match schema",
+	}
+
+	if err != nil {
+		response.Message = err.Error()
+	}
+
+	w.WriteHeader(response.Code)
+	json.NewEncoder(w).Encode(response)
+}
