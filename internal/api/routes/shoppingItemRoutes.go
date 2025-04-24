@@ -65,7 +65,7 @@ func getShoppingItemById(s *api.Server) http.HandlerFunc {
 				break
 			}
 		}
-		if models.IsEmpty[models.Item](item) {
+		if models.IsEmpty(item) {
 			json.NewEncoder(w)
 			http.Error(w, reflect.TypeOf(item).Name()+" with id "+idStr+" cannot be found", http.StatusNotFound)
 
@@ -109,7 +109,7 @@ func deleteShoppingItemById(s *api.Server) http.HandlerFunc {
 				break
 			}
 		}
-		if models.IsEmpty[models.Item](item) {
+		if models.IsEmpty(item) {
 			json.NewEncoder(w)
 			http.Error(w, reflect.TypeOf(item).Name()+" with id "+idStr+" cannot be found", http.StatusNotFound)
 

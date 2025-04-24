@@ -140,4 +140,33 @@ paths:
       summary: List all users
       tags:
       - users
+  /users/{id}:
+    get:
+      description: Gets a user by UUID
+      parameters:
+      - description: User ID
+        example: 550e8400-e29b-41d4-a716-446655440000
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User found
+          schema:
+            $ref: '#/definitions/models.User'
+        "400":
+          description: Invalid UUID format
+          schema:
+            type: string
+        "404":
+          description: User not found
+          schema:
+            type: string
+      summary: Get a user by id
+      tags:
+      - users
 swagger: "2.0"

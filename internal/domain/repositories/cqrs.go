@@ -11,7 +11,7 @@ import (
 	sq "github.com/Masterminds/squirrel"
 )
 
-func Query[T any](f func(*sql.Conn, context.Context, sq.StatementBuilderType) ([]T, error)) ([]T, error) {
+func Query[T any](queryFunction func(*sql.Conn, context.Context, sq.StatementBuilderType) ([]T, error)) ([]T, error) {
 	sb := GetSB()
 
 	db := database.GetDB()
@@ -29,9 +29,28 @@ func Query[T any](f func(*sql.Conn, context.Context, sq.StatementBuilderType) ([
 		}
 	}()
 
-	result, err := f(conn, ctx, sb.StatementBuilder)
+	return queryFunction(conn, ctx, sb.StatementBuilder)
 
-	return result, err
+}
+
+func QueryOne[T any](queryFunction func(*sql.Conn, context.Context, sq.StatementBuilderType) (*T, error)) (*T, error) {
+	sb := GetSB()
+	db := database.GetDB()
+	dbPool := db.GetDBPool()
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	conn, err := dbPool.Conn(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get database connection: %w", err)
+	}
+	defer func() {
+		if err := conn.Close(); err != nil {
+			log.Printf("Warning: failed to close database connection: %v", err)
+		}
+	}()
+
+	return queryFunction(conn, ctx, sb.StatementBuilder)
 
 }
 

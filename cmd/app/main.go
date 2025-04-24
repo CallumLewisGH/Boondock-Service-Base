@@ -31,3 +31,12 @@ func main() {
 	http.ListenAndServe(":8080", srv)
 
 }
+
+//TODO:
+// Complete User Endpoints
+
+// GETBYID
+// PUTBYID
+// CREATE
+
+// USING THIS CREATE AUTHENTICATION MIDDLEWARE
