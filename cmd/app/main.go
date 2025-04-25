@@ -25,7 +25,6 @@ func main() {
 
 	//Route Registry
 	routes.RegisterUserRoutes(srv)
-	routes.RegisterShoppingItemRoutes(srv)
 
 	//Starts the server on port 8080
 	http.ListenAndServe(":8080", srv)

@@ -8,8 +8,7 @@ CREATE TABLE IF NOT EXISTS base.users (
 
 	"user_name"       VARCHAR(128)    NOT NULL,
 	"email"           VARCHAR(128)    NOT NULL,
-	"hash_salt"       VARCHAR(128)    NOT NULL,
-	"password_hash"   VARCHAR(128)    NOT NULL,
+	"password_hash"   VARCHAR(256)    NOT NULL,
 	"profile_picture" TEXT            NULL
 );
 CREATE UNIQUE INDEX idx_users_email ON base.users(email);

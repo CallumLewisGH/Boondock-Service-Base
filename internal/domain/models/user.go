@@ -13,7 +13,6 @@ type User struct {
 
 	UserName       string  `db:"user_name" json:"user_name"`
 	Email          string  `db:"email" json:"email"`
-	HashSalt       string  `db:"hash_salt" json:"-"`
 	PasswordHash   string  `db:"password_hash" json:"-"`
 	ProfilePicture *string `db:"profile_picture" json:"profile_picture,omitempty"`
 }
