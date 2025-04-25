@@ -18,7 +18,7 @@ func GetAllUsers() ([]models.User, error) {
 	//Create QueryFunction
 	queryFunction := func(conn *sql.Conn, ctx context.Context, sb sq.StatementBuilderType) ([]models.User, error) {
 		query, args, err := sb.
-			Select("id", "user_name", "email", "profile_picture").
+			Select("id", "created_utc", "user_name", "email", "profile_picture").
 			From("base.users").
 			ToSql()
 
@@ -50,7 +50,7 @@ func GetUserById(id uuid.UUID) (*models.User, error) {
 	//Create QueryFunction
 	queryFunction := func(conn *sql.Conn, ctx context.Context, sb sq.StatementBuilderType) (*models.User, error) {
 		query, args, err := sb.
-			Select("id", "user_name", "email", "profile_picture").
+			Select("id", "created_utc", "user_name", "email", "profile_picture").
 			From("base.users").
 			Where(sq.Eq{"id": id}).
 			ToSql()

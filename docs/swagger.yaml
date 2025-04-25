@@ -1,26 +1,23 @@
 basePath: /
 definitions:
-  models.Item:
-    description: Shopping item information
-    properties:
-      id:
-        example: 550e8400-e29b-41d4-a716-446655440000
-        type: string
-      name:
-        example: Milk
-        type: string
-    type: object
   models.User:
     properties:
       created_utc:
-        type: string
-      deleted_utc:
         type: string
       email:
         type: string
       id:
         type: string
       profile_picture:
+        type: string
+      user_name:
+        type: string
+    type: object
+  models.UserApiRequest:
+    properties:
+      email:
+        type: string
+      password:
         type: string
       user_name:
         type: string
@@ -32,99 +29,6 @@ info:
   title: Boondock-Service-Base API
   version: "1.0"
 paths:
-  /items:
-    get:
-      description: Get full shopping list
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Returns the shopping list, empty array if no items
-          schema:
-            items:
-              $ref: '#/definitions/models.Item'
-            type: array
-      summary: List all shopping items
-      tags:
-      - items
-  /items/:
-    post:
-      description: Creates a new shopping item from provided json data
-      parameters:
-      - description: Item
-        format: models.Item
-        in: body
-        name: name
-        required: true
-        schema:
-          $ref: '#/definitions/models.Item'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: ""
-      summary: Create a new shopping item
-      tags:
-      - items
-  /items/{id}:
-    delete:
-      description: Removes a shopping item from storage by UUID
-      parameters:
-      - description: Item ID
-        example: 550e8400-e29b-41d4-a716-446655440000
-        format: uuid
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Item found
-          schema:
-            $ref: '#/definitions/models.Item'
-        "400":
-          description: Invalid UUID format
-          schema:
-            type: string
-        "404":
-          description: Item not found
-          schema:
-            type: string
-      summary: Deltete a shopping item by id
-      tags:
-      - items
-    get:
-      description: Gets a shopping item by UUID
-      parameters:
-      - description: Item ID
-        example: 550e8400-e29b-41d4-a716-446655440000
-        format: uuid
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Item found
-          schema:
-            $ref: '#/definitions/models.Item'
-        "400":
-          description: Invalid UUID format
-          schema:
-            type: string
-        "404":
-          description: Item not found
-          schema:
-            type: string
-      summary: Get a shopping item by id
-      tags:
-      - items
   /users:
     get:
       description: Get all users in the database
@@ -138,6 +42,27 @@ paths:
               $ref: '#/definitions/models.User'
             type: array
       summary: List all users
+      tags:
+      - users
+  /users/:
+    post:
+      description: Creates a new User from provided json data
+      parameters:
+      - description: User
+        format: models.UserApiRequest
+        in: body
+        name: name
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserApiRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: ""
+      summary: Create a new User
       tags:
       - users
   /users/{id}:

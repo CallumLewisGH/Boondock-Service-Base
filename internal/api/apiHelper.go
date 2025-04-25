@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-	"reflect"
 )
 
 type APIResponse struct {
@@ -13,12 +12,12 @@ type APIResponse struct {
 	Code    int    `json:"code"`
 }
 
-func JsonResponse(w http.ResponseWriter, data any, err error, successCode int) {
+func EncodeJsonResponse(w http.ResponseWriter, data any, err error, responseCode int) {
 	w.Header().Set("Content-Type", "application/json")
 
 	response := APIResponse{
 		Data:    data,
-		Code:    successCode,
+		Code:    responseCode,
 		Message: "success",
 	}
 
@@ -26,26 +25,16 @@ func JsonResponse(w http.ResponseWriter, data any, err error, successCode int) {
 		response.Message = err.Error()
 	}
 
-	switch {
-	case reflect.ValueOf(data).IsNil():
-		response.Message = "no data found"
-		response.Code = http.StatusNotFound
-
-	case err != nil:
-		response.Message = err.Error()
-		// Don't override status code if it was already set to something specific
-		if response.Code == http.StatusOK {
-			log.Printf("developer setting status code ok when error present")
-			response.Code = http.StatusInternalServerError
-		}
-
+	if responseCode == http.StatusOK && err != nil {
+		log.Printf("developer setting status code ok when error present")
+		response.Code = http.StatusInternalServerError
 	}
 
 	w.WriteHeader(response.Code)
 	json.NewEncoder(w).Encode(response)
 }
 
-func JsonResponseBadRequest(w http.ResponseWriter, err error) {
+func EncodeJsonResponseBadRequest(w http.ResponseWriter, err error) {
 	w.Header().Set("Content-Type", "application/json")
 
 	response := APIResponse{
@@ -60,4 +49,15 @@ func JsonResponseBadRequest(w http.ResponseWriter, err error) {
 
 	w.WriteHeader(response.Code)
 	json.NewEncoder(w).Encode(response)
+}
+
+func DecodeJsonRequest[T any](r *http.Request, w http.ResponseWriter, model T) *T {
+	err := json.NewDecoder(r.Body).Decode(&model)
+	if err != nil {
+		EncodeJsonResponseBadRequest(w, err)
+		return nil
+	}
+	defer r.Body.Close()
+
+	return &model
 }

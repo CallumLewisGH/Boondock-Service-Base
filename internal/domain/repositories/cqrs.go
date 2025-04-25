@@ -60,7 +60,7 @@ func Execute[T any](commandFunction func(*sql.Tx, context.Context, sq.StatementB
 	sb := GetSB()
 	db := database.GetDB()
 	dbPool := db.GetDBPool()
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
 	tx, err := dbPool.BeginTx(ctx, nil)
@@ -95,7 +95,7 @@ func ExecuteOne[T any](commandFunction func(*sql.Tx, context.Context, sq.Stateme
 	sb := GetSB()
 	db := database.GetDB()
 	dbPool := db.GetDBPool()
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
 	tx, err := dbPool.BeginTx(ctx, nil)
@@ -121,5 +121,5 @@ func ExecuteOne[T any](commandFunction func(*sql.Tx, context.Context, sq.Stateme
 
 	tx.Commit()
 
-	return result, err
+	return result, nil
 }

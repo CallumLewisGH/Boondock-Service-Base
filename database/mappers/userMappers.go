@@ -14,7 +14,7 @@ func MapUserRows(rows *sql.Rows) ([]models.User, error) {
 	var users []models.User
 	for rows.Next() {
 		var user models.User
-		if err := rows.Scan(&user.ID, &user.UserName, &user.Email, &user.ProfilePicture); err != nil {
+		if err := rows.Scan(&user.ID, &user.CreatedUTC, &user.UserName, &user.Email, &user.ProfilePicture); err != nil {
 			// Log but continue processing other rows
 			log.Printf("Failed to scan user row: %v", err)
 			continue
@@ -32,10 +32,10 @@ func MapUserRows(rows *sql.Rows) ([]models.User, error) {
 func MapUserRow(row *sql.Row) (*models.User, error) {
 	//Map Results
 	var user models.User
-	err := row.Scan(&user.ID, &user.UserName, &user.Email, &user.ProfilePicture)
+	err := row.Scan(&user.ID, &user.CreatedUTC, &user.UserName, &user.Email, &user.ProfilePicture)
 
 	if errors.Is(err, sql.ErrNoRows) {
-		return nil, fmt.Errorf("error not found: %w", err)
+		return nil, fmt.Errorf("item not found: %w", err)
 	}
 
 	return &user, nil

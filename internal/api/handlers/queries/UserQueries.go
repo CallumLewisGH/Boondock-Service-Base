@@ -13,7 +13,7 @@ func GetAllUsers() ([]models.User, error) {
 	users, err := dbQuery.GetAllUsers()
 
 	if err != nil {
-		return nil, fmt.Errorf("failed to call query: %w", err)
+		return nil, fmt.Errorf("failure in query: %w", err)
 	}
 
 	return users, nil
@@ -25,7 +25,7 @@ func GetUserById(id uuid.UUID) (*models.User, error) {
 	user, err := dbQuery.GetUserById(id)
 
 	if err != nil {
-		return nil, fmt.Errorf("failed to call query: %w", err)
+		return nil, fmt.Errorf("failure in query: %w", err)
 	}
 
 	return user, nil
@@ -36,7 +36,7 @@ func GetUserByUserName(userName string) (*models.User, error) {
 	user, err := dbQuery.GetUserByUserName(userName)
 
 	if err != nil {
-		return nil, fmt.Errorf("failed to call query: %w", err)
+		return nil, fmt.Errorf("failure in query: %w", err)
 	}
 
 	return user, nil

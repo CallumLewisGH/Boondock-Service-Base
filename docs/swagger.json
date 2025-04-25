@@ -9,145 +9,6 @@
     "host": "localhost:8080",
     "basePath": "/",
     "paths": {
-        "/items": {
-            "get": {
-                "description": "Get full shopping list",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "items"
-                ],
-                "summary": "List all shopping items",
-                "responses": {
-                    "200": {
-                        "description": "Returns the shopping list, empty array if no items",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/models.Item"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/items/": {
-            "post": {
-                "description": "Creates a new shopping item from provided json data",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "items"
-                ],
-                "summary": "Create a new shopping item",
-                "parameters": [
-                    {
-                        "format": "models.Item",
-                        "description": "Item",
-                        "name": "name",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.Item"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": ""
-                        }
-                    }
-                }
-            }
-        },
-        "/items/{id}": {
-            "get": {
-                "description": "Gets a shopping item by UUID",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "items"
-                ],
-                "summary": "Get a shopping item by id",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "format": "uuid",
-                        "example": "550e8400-e29b-41d4-a716-446655440000",
-                        "description": "Item ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Item found",
-                        "schema": {
-                            "$ref": "#/definitions/models.Item"
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid UUID format",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "404": {
-                        "description": "Item not found",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "description": "Removes a shopping item from storage by UUID",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "items"
-                ],
-                "summary": "Deltete a shopping item by id",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "format": "uuid",
-                        "example": "550e8400-e29b-41d4-a716-446655440000",
-                        "description": "Item ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Item found",
-                        "schema": {
-                            "$ref": "#/definitions/models.Item"
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid UUID format",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "404": {
-                        "description": "Item not found",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
         "/users": {
             "get": {
                 "description": "Get all users in the database",
@@ -166,6 +27,38 @@
                             "items": {
                                 "$ref": "#/definitions/models.User"
                             }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/": {
+            "post": {
+                "description": "Creates a new User from provided json data",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Create a new User",
+                "parameters": [
+                    {
+                        "format": "models.UserApiRequest",
+                        "description": "User",
+                        "name": "name",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.UserApiRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": ""
                         }
                     }
                 }
@@ -216,27 +109,10 @@
         }
     },
     "definitions": {
-        "models.Item": {
-            "description": "Shopping item information",
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "string",
-                    "example": "550e8400-e29b-41d4-a716-446655440000"
-                },
-                "name": {
-                    "type": "string",
-                    "example": "Milk"
-                }
-            }
-        },
         "models.User": {
             "type": "object",
             "properties": {
                 "created_utc": {
-                    "type": "string"
-                },
-                "deleted_utc": {
                     "type": "string"
                 },
                 "email": {
@@ -246,6 +122,20 @@
                     "type": "string"
                 },
                 "profile_picture": {
+                    "type": "string"
+                },
+                "user_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.UserApiRequest": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
                     "type": "string"
                 },
                 "user_name": {
