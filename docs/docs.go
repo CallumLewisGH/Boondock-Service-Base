@@ -38,7 +38,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/users/": {
+        "/users/create": {
             "post": {
                 "description": "Creates a new User from provided json data",
                 "produces": [
@@ -50,13 +50,45 @@ const docTemplate = `{
                 "summary": "Create a new User",
                 "parameters": [
                     {
-                        "format": "models.UserApiRequest",
+                        "format": "models.CreateUserRequest",
                         "description": "User",
                         "name": "name",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.UserApiRequest"
+                            "$ref": "#/definitions/models.CreateUserRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": ""
+                        }
+                    }
+                }
+            }
+        },
+        "/users/update/": {
+            "put": {
+                "description": "Updates a new User with the given id",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Updates a User by id",
+                "parameters": [
+                    {
+                        "format": "models.UpdateUserRequest",
+                        "description": "User",
+                        "name": "name",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.UpdateUserRequest"
                         }
                     }
                 ],
@@ -115,6 +147,46 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "models.CreateUserRequest": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "userName": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.UpdateUserRequest": {
+            "type": "object",
+            "properties": {
+                "created_utc": {
+                    "type": "string"
+                },
+                "deleted_utc": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "password_hash": {
+                    "type": "string"
+                },
+                "profile_picture": {
+                    "type": "string"
+                },
+                "user_name": {
+                    "type": "string"
+                }
+            }
+        },
         "models.User": {
             "type": "object",
             "properties": {
@@ -128,20 +200,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "profile_picture": {
-                    "type": "string"
-                },
-                "user_name": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.UserApiRequest": {
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "password": {
                     "type": "string"
                 },
                 "user_name": {

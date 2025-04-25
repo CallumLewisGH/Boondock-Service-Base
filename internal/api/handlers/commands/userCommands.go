@@ -8,7 +8,7 @@ import (
 	authenticationHelper "github.com/CallumLewisGH/Boondock-Service-Base/internal/helpers/authentication"
 )
 
-func CreateUser(apiUserRequest *models.UserApiRequest) (*models.User, error) {
+func CreateUser(apiUserRequest *models.CreateUserRequest) (*models.User, error) {
 	passwordHash, err := authenticationHelper.GenerateHash(*apiUserRequest.Password)
 
 	if err != nil {
@@ -22,6 +22,25 @@ func CreateUser(apiUserRequest *models.UserApiRequest) (*models.User, error) {
 	}
 
 	user, err := dbCommand.CreateUser(userDBRequest)
+
+	if err != nil {
+		return nil, fmt.Errorf("error in execution: %s", err)
+	}
+
+	return user, nil
+}
+
+func UpdateUserById(model models.UpdateUserRequest) (*models.User, error) {
+	userDBRequest := models.UserDbRequest{
+		UserName:       model.UserName,
+		PasswordHash:   model.PasswordHash,
+		Email:          model.Email,
+		ProfilePicture: model.ProfilePicture,
+		DeletedUTC:     model.DeletedUTC,
+		ID:             model.ID,
+	}
+
+	user, err := dbCommand.UpdateUserById(userDBRequest)
 
 	if err != nil {
 		return nil, fmt.Errorf("error in execution: %s", err)
